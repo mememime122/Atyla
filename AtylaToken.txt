@@ -3,9 +3,19 @@
 pragma solidity 0.8.0;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.2/contracts/token/ERC20/ERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.2/contracts/access/Ownable.sol";
 
-contract AtylaToken is ERC20{
+contract AtylaToken is ERC20, Ownable{
     constructor() ERC20("Atyla Token", "ATYLA"){
-        _mint(0x3e9aC16624835836033AD555A1b154e6a2aFAe50, 600 *10**uint(decimals()));
+        //transferOwnership("address de contrato RifasViajes");
     }
+
+    function mint(uint256 amount) external virtual onlyOwner{
+         _mint(msg.sender, amount *10**uint(decimals()-2));
+    }
+
+    function burn(address account, uint256 amount) external virtual onlyOwner{
+        _burn(account, amount *10**uint(decimals()-2));
+    }
+
 }
