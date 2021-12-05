@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.0;
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.2/contracts/token/ERC20/ERC20.sol";
+
+contract AtylaToken is ERC20{
+    constructor() ERC20("Atyla Token", "ATYLA"){
+        _mint(0x3e9aC16624835836033AD555A1b154e6a2aFAe50, 600 *10**uint(decimals()));
+    }
+}
