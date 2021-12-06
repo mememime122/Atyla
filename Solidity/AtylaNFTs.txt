@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.0;
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.4/contracts/token/ERC1155/ERC1155.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.4/contracts/access/Ownable.sol";
+
+contract AtylaToken is ERC1155, Ownable{
+
+    uint256 public constant NFTC1 = 0;
+    uint256 public constant NFTC2 = 1;
+    uint256 public constant NFTC3 = 2;
+    uint256 public constant NFTC4 = 3;
+
+    constructor() ERC1155("https://lfhjun1gu6if.usemoralis.com/{id}.json"){
+        _mint(msg.sender, NFTC1, 1, "");
+        _mint(msg.sender, NFTC2, 5, "");
+        _mint(msg.sender, NFTC3, 5, "");
+        _mint(msg.sender, NFTC4, 5, "");
+    }
+
+    function mint(address account, uint256 id, uint256 amount) external virtual onlyOwner{
+        _mint(account, id, amount, "");
+    }
+
+    function burn(address account, uint256 id, uint256 amount) external virtual {
+        require(msg.sender == account, "You can only burn your own tokens");
+        _burn(account, id, amount); 
+    } 
+
+
+}
+
