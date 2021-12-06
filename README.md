@@ -9,7 +9,7 @@ propio, añadir la opción de donar con la criptomoneda BUSD,
 un sistema para rifar viajes en el barco Atyla y un marketplace
 de NFTs propios. El objetivo es mejorar la financiación y promoción
 de la fundación.
-## Author
+## Autor
 
 Kerman Alonso Ajuria [@mememime122](https://github.com/mememime122)
 
