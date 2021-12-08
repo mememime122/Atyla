@@ -83,6 +83,14 @@ async function initializeApp() {
     //console.log(NFTWithMetadata);
     let ownerData = await getOwnerData();
     renderInventory(NFTWithMetadata, ownerData);
+
+    //---------
+    // console.log(currentUser.get("accounts"));
+    // Moralis.User.logOut().then(() => {
+    //     const currentUser = Moralis.User.current();  // this will now be null
+    // });
+    // console.log(currentUser.get("accounts"));
+    //---------
 }
 
 initializeApp();
