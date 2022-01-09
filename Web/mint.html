@@ -13,6 +13,26 @@
     <!--link rel="stylesheet" href="./style.css"-->
   </head>
   <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="index.html">
+        <img src="https://edoh3q5avzd.exactdn.com/wp-content/uploads/2020/03/Atyla-logo.png?strip=all&amp;lossy=1&amp;ssl=1" 
+        alt="Atyla ship Foundation" id="logo" data-height-percentage="80" data-actual-width="150" data-actual-height="43">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="raffleBoard.html">Trip raffles</a>
+          <a class="nav-item nav-link" href="NFTmanager.html">NFT manager</a>
+          <a class="nav-item nav-link" href="donate.html">Donate</a>
+        </div>
+      </div>
+    </nav>
+
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
         <h1 class="display-4">NFT manager</h1>
@@ -21,25 +41,33 @@
     <div class="container">
         <div class="row" id="app">
             <div class="col col-md-12">
-                <div>
-                    <label>Token id</label>
-                    <input id="token_id_input" type="number">
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Token ID</label>
+                  <input type="number" class="form-control" id="token-id-input">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Amount of NFTs</label>
+                  <input type="number" class="form-control" id="amount-input">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Address</label>
+                  <input type="text" class="form-control" id="address-input">
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Pay with</label>
+                  <select class="form-control" id="token-input">
+                    <option>BUSD</option>
+                    <option>ATYLA</option>
+                  </select>
                 </div>
                 <div>
-                    <label>Amount</label>
-                    <input id="amount_input" type="number">
-                </div>
-                <div>
-                    <label>Address</label>
-                    <input id="address_input" type="text">
-                </div>
-                <div>
-                    <button class="btn btn-primary" id="submit_mint">Mint</button>
+                    <button class="btn btn-primary" id="pay">Buy</button>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="./abi.js"></script>
+    <script type="text/javascript" src="./NFTabi.js"></script>
+    <script type="text/javascript" src="./ERC20abi.js"></script>
     <script type="text/javascript" src="./mint.js"></script>
   </body>
 </html>

@@ -12,13 +12,13 @@ import "./AtylaToken.sol";
 contract Donate is Ownable{
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
+    using SafeERC20 for AtylaToken;
 
     address private donationRecipient;
     address private contractAddressBUSD = 0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee;
     IERC20 private BUSD = IERC20(contractAddressBUSD);
-    address private contractAddressATYLA = 0x81ad7F16424233b2272672860E7be3F749ca10f0;
-    IERC20 private  ATYLA = IERC20(contractAddressATYLA);
-    AtylaToken private AT = AtylaToken(contractAddressATYLA);
+    address private contractAddressATYLA = 0x8fd5f66668eacD509cc92E9cf3D0a0eB3de78772;
+    AtylaToken private ATYLA = AtylaToken(contractAddressATYLA);
 
     constructor(){
         donationRecipient = msg.sender;
@@ -30,8 +30,12 @@ contract Donate is Ownable{
 
     function buyATYLA(uint256 amount) external {
         BUSD.safeTransferFrom(msg.sender, donationRecipient, amount);
-        AT.mintBacked(amount);
+        ATYLA.mintBacked(amount);
         ATYLA.safeTransfer(msg.sender, amount);
+    }
+
+    function getDonationRecipient() external view returns (address){
+        return donationRecipient;
     }
 
     function changeDonationRecipient(address newRecipient) external  onlyOwner{

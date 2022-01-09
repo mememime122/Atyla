@@ -10,7 +10,6 @@ contract AtylaToken is ERC20, Ownable{
     mapping(address => bool) private minterContracts;
 
     constructor() ERC20("Atyla Token", "ATYLA"){
-        //transferOwnership("address de contrato RifasViajes");
     }
 
     modifier onlyMinterContracts() {
@@ -39,4 +38,3 @@ contract AtylaToken is ERC20, Ownable{
     }
 
 }
-

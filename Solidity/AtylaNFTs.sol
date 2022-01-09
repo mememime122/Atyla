@@ -2,6 +2,7 @@
 
 pragma solidity 0.8.0;
 
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.4/contracts/token/ERC20/ERC20.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.4/contracts/token/ERC1155/ERC1155.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.4/contracts/access/Ownable.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.4/contracts/utils/math/SafeMath.sol";
@@ -12,6 +13,7 @@ import "./Donate.sol";
 contract AtylaNFTs is ERC1155, Ownable{
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
+    using SafeERC20 for AtylaToken;
 
     uint256 MAX_INT = 2**256 - 1;
 
@@ -24,34 +26,34 @@ contract AtylaNFTs is ERC1155, Ownable{
     uint256 private constant NFTC3 = 2;
     uint256 private constant NFTC4 = 3;
 
-    address private donationRecipient;
+    // address private donationRecipient;
     address private contractAddressBUSD = 0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee;
     IERC20 private BUSD = IERC20(contractAddressBUSD);
-    address private contractAddressATYLA = 0x81ad7F16424233b2272672860E7be3F749ca10f0;
-    IERC20 private  ATYLA = IERC20(contractAddressATYLA);
-    AtylaToken private AT = AtylaToken(contractAddressATYLA);
-    address private contractAddressDonate = 0x81ad7F16424233b2272672860E7be3F749ca10f0;
-
+    address private contractAddressATYLA = 0x8fd5f66668eacD509cc92E9cf3D0a0eB3de78772;
+    // IERC20 private  ATYLA = IERC20(contractAddressATYLA);
+    AtylaToken private ATYLA = AtylaToken(contractAddressATYLA);
+    address private contractAddressDonate = 0x64AD9F4544D2ACB06FF8c1Fb4D2F964D146EFC66;
     Donate private Don = Donate(contractAddressDonate);
-    uint256 private transferDonation = 5*10**uint(AT.decimals()-1);
+
+    uint256 private transferDonation = 5*10**uint(ATYLA.decimals()-1);
 
     constructor() ERC1155("https://lfhjun1gu6if.usemoralis.com/{id}.json"){
         _mint(msg.sender, NFTC1, 1, "");
         currentSupplies[NFTC1] = 1;
         supplyCaps[NFTC1] = 1;
-        prices[NFTC1] = 2*10**uint(AT.decimals());
+        prices[NFTC1] = 2*10**uint(ATYLA.decimals());
         _mint(msg.sender, NFTC2, 5, "");
         currentSupplies[NFTC2] = 5;
         supplyCaps[NFTC2] = 5;
-        prices[NFTC2] = 10**uint(AT.decimals());
+        prices[NFTC2] = 10**uint(ATYLA.decimals());
         _mint(msg.sender, NFTC3, 5, "");
         currentSupplies[NFTC3] = 5;
         supplyCaps[NFTC3] = 5;
-        prices[NFTC3] = 10**uint(AT.decimals());
+        prices[NFTC3] = 10**uint(ATYLA.decimals());
         _mint(msg.sender, NFTC4, 5, "");
         currentSupplies[NFTC4] = 5;
         supplyCaps[NFTC4] = 5;
-        prices[NFTC4] = 10**uint(AT.decimals());
+        prices[NFTC4] = 10**uint(ATYLA.decimals());
     }
 
     function mintAir(address account, uint256 id, uint256 amount) external onlyOwner{
@@ -69,6 +71,10 @@ contract AtylaNFTs is ERC1155, Ownable{
         prices[id] = price;
     }
 
+    function getPrice(uint256 id) external view returns(uint256) {
+        return prices[id];
+    }
+
     function increaseCap(uint256 id, uint256 amount) external onlyOwner{
         supplyCaps[id] = supplyCaps[id].add(amount);
     }
@@ -79,16 +85,22 @@ contract AtylaNFTs is ERC1155, Ownable{
         supplyCaps[id] = supplyCaps[id].sub(amount);
     }
 
+    function getCap(uint256 id) external view returns(uint256) {
+        return supplyCaps[id];
+    }
+
     function mintBackedATYLA(address account, uint256 id, uint256 amount) external{
         require(currentSupplies[id].add(amount) <= supplyCaps[id], "You can't mint that many tokens.");
-        ATYLA.safeTransfer(donationRecipient, prices[id].mul(amount));
+        address donationRecipient = Don.getDonationRecipient();
+        ATYLA.safeTransferFrom(msg.sender, donationRecipient, prices[id].mul(amount));
         _mint(account, id, amount, "");
         currentSupplies[id] = currentSupplies[id].add(amount);
     }
 
     function mintBackedBUSD(address account, uint256 id, uint256 amount) external{
         require(currentSupplies[id].add(amount) <= supplyCaps[id], "You can't mint that many tokens.");
-        BUSD.safeTransfer(donationRecipient, prices[id].mul(amount));
+        address donationRecipient = Don.getDonationRecipient();
+        BUSD.safeTransferFrom(msg.sender, donationRecipient, prices[id].mul(amount));
         _mint(account, id, amount, "");
         currentSupplies[id] = currentSupplies[id].add(amount);
     }
@@ -99,22 +111,17 @@ contract AtylaNFTs is ERC1155, Ownable{
         currentSupplies[id] = currentSupplies[id].sub(amount);
     } 
 
-    /**
-     * @dev Sets the values for {name} and {symbol}.
-     *
-     * The default value of {decimals} is 18. To select a different value for
-     * {decimals} you should overload it.
-     *
-     * All two of these values are immutable: they can only be set once during
-     * construction.
-     */
-
     function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes memory data) public override {
         require(
             from == _msgSender() || isApprovedForAll(from, _msgSender()),
             "ERC1155: caller is not owner nor approved"
         );
-        Don.buyATYLA(transferDonation);
+
+        address donationRecipient = Don.getDonationRecipient();
+        BUSD.safeTransferFrom(msg.sender, donationRecipient, transferDonation);
+        ATYLA.mintBacked(transferDonation);
+        ATYLA.safeTransfer(msg.sender, transferDonation);
+
         _safeTransferFrom(from, to, id, amount, data);
     }
 
@@ -122,8 +129,8 @@ contract AtylaNFTs is ERC1155, Ownable{
         transferDonation = donationAmount;
     }
 
-
-
-
+    function getTransferDonation() external view returns(uint256) {
+        return transferDonation;
+    }
 
 }

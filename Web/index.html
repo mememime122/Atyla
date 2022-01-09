@@ -10,16 +10,37 @@
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!--link rel="stylesheet" href="./style.css"-->
+    <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="display-4">NFT manager</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="index.html">
+        <img src="https://edoh3q5avzd.exactdn.com/wp-content/uploads/2020/03/Atyla-logo.png?strip=all&amp;lossy=1&amp;ssl=1" 
+        alt="Atyla ship Foundation" id="logo" data-height-percentage="80" data-actual-width="150" data-actual-height="43">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="raffleBoard.html">Trip raffles</a>
+          <a class="nav-item nav-link" href="NFTmanager.html">NFT manager</a>
+          <a class="nav-item nav-link" href="donate.html">Donate</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="d-flex justify-content-center" id="container-logs">
+      <div class="row" id="logs">
       </div>
     </div>
-    <div class="container">
-        <div class="row" id="app"></div>
+
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4"></h1>
+      </div>
     </div>
 
     <script type="text/javascript" src="./main.js"></script>
