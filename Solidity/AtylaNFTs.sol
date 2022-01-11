@@ -26,11 +26,9 @@ contract AtylaNFTs is ERC1155, Ownable{
     uint256 private constant NFTC3 = 2;
     uint256 private constant NFTC4 = 3;
 
-    // address private donationRecipient;
     address private contractAddressBUSD = 0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee;
     IERC20 private BUSD = IERC20(contractAddressBUSD);
     address private contractAddressATYLA = 0x8fd5f66668eacD509cc92E9cf3D0a0eB3de78772;
-    // IERC20 private  ATYLA = IERC20(contractAddressATYLA);
     AtylaToken private ATYLA = AtylaToken(contractAddressATYLA);
     address private contractAddressDonate = 0x64AD9F4544D2ACB06FF8c1Fb4D2F964D146EFC66;
     Donate private Don = Donate(contractAddressDonate);

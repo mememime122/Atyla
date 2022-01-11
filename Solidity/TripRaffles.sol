@@ -44,7 +44,6 @@ contract TripRaffles is Ownable {
     }
 
     function endRaffle(uint256 raffleId) external onlyOwner raffleIsActive(raffleId) returns (address){
-        // require(endDate[raffleId] > now, "Raffle end date hasn't arrived yet");
         address winner;
         if (totalTicketNum[raffleId] >= targetTicketNum[raffleId]){
             uint256 pseudoRandom = uint(keccak256(abi.encode(block.difficulty, block.timestamp, participants[raffleId])));
@@ -81,8 +80,6 @@ contract TripRaffles is Ownable {
         raffleWinner[raffleId] = winner;
         return winner;
     }
-
-    //function winnerContactInfo(string name, string surname, string email, string phone) external onlyWinner{}
 
     function getRaffleWinner(uint256 raffleId) external view returns (address){
         require(!activeRaffles[raffleId], "Ongoing raffle, no winner yet");

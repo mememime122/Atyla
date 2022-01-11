@@ -17,7 +17,6 @@ async function init(){
     }
 
     web3 = await Moralis.enableWeb3();
-    // web3 = await Moralis.Web3.enable();
     accounts = await web3.eth.getAccounts();
 
 

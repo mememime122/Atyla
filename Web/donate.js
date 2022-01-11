@@ -2,7 +2,6 @@
 const serverUrl = "https://rk0bbjwxgtyy.usemoralis.com:2053/server";
 const appId = "A2FOUzXZbFyMxBZJUvPVvguhGLLMyuURgUJvwwsN"; 
 Moralis.start({ serverUrl, appId });
-// Moralis.enableWeb3();
 let web3;
 let accounts;
 let currentUser;
@@ -19,7 +18,6 @@ async function init(){
     }
     
     web3 = await Moralis.enableWeb3();
-    // web3 = await Moralis.Web3.enable();
     accounts = await web3.eth.getAccounts();
 }
 
