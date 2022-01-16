@@ -1,8 +1,8 @@
-const serverUrl = "https://rk0bbjwxgtyy.usemoralis.com:2053/server";
+const serverUrl = "https://rk0bbjwxgtyy.usemoralis.com:2053/server"; 
 const appId = "A2FOUzXZbFyMxBZJUvPVvguhGLLMyuURgUJvwwsN"; 
 Moralis.start({ serverUrl, appId });
-const NFT_ADDRESS = "0x4f3013736eead635f9bce3371f22a0e6d20a8dc7";
-// const NFT_ADDRESS = "0x007fe8A4b56BDe96C71262D6fFbb7A72AC9a78d9";
+// const NFT_ADDRESS = "0x4f3013736eead635f9bce3371f22a0e6d20a8dc7";
+const NFT_ADDRESS = "0x007fe8A4b56BDe96C71262D6fFbb7A72AC9a78d9";
 let currentUser;
 
 function renderInventory(NFTs, ownerData){
@@ -35,6 +35,20 @@ function renderInventory(NFTs, ownerData){
     }
 }
 
+function fetchNFTMetadata(NFTs){
+    let promises = [];
+    for (let i = 0; i < NFTs.length; i++){
+        let nft = NFTs[i];
+        let id = nft.token_id;
+        promises.push(fetch("https://rk0bbjwxgtyy.usemoralis.com:2053/server/functions/getNFT?_ApplicationId=A2FOUzXZbFyMxBZJUvPVvguhGLLMyuURgUJvwwsN&nftId=" + id)
+        .then(res => res.json())
+        .then(res => JSON.parse(res.result))
+        .then(res => {nft.metadata = res})
+        .then( () => {return nft;}));
+    }
+    return Promise.all(promises);
+}
+
 async function getOwnerData(){
     let accounts = currentUser.get("accounts");
     const options = { chain: 'bsc testnet', address: accounts[0], token_address: NFT_ADDRESS };
@@ -60,16 +74,9 @@ async function initializeApp() {
     const options = { address: NFT_ADDRESS,
     chain: "bsc testnet" };
     let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
-    let NFTWithMetadata = await NFTs.result
-    await console.log(NFTWithMetadata)
+    let NFTWithMetadata = await fetchNFTMetadata(NFTs.result)
+    
     for (let i = 0; i < NFTWithMetadata.length; i++){
-        NFTWithMetadata[i].metadata = JSON.parse(NFTWithMetadata[i].metadata);
-        // const optionsMetadata = { address: NFT_ADDRESS,
-        //     chain: "bsc testnet" };
-        // let metadata = await Moralis.Web3API.token.getNFTMetadata(optionsMetadata);
-        // console.log("Metadata result:", metadata.result)
-        // NFTWithMetadata[i].metadata = await metadata.result;
-
         const optionsOwners = { address: NFT_ADDRESS, 
             token_id: NFTWithMetadata[i].token_id, chain: "bsc testnet"};
         let tokenIdOwners = await Moralis.Web3API.token.getTokenIdOwners(optionsOwners);
@@ -77,7 +84,7 @@ async function initializeApp() {
 
         NFTWithMetadata[i].owners = tokenIdOwnersArray;
     }
-    
+    await console.log(NFTWithMetadata)
     let ownerData = await getOwnerData();
     renderInventory(NFTWithMetadata, ownerData);
 }
