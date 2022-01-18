@@ -16,8 +16,10 @@ async function init(){
         // window.location.pathname = "/Web/index.html";
         window.location.pathname = "/index.html";
     }
-    
-    web3 = await Moralis.enableWeb3();
+
+    await Moralis.enableWeb3();
+    web3 = new Web3(Moralis.provider)
+    // web3 = await Moralis.enableWeb3();
     accounts = await web3.eth.getAccounts();
 }
 
