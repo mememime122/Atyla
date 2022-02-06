@@ -1,7 +1,6 @@
 const serverUrl = "https://rk0bbjwxgtyy.usemoralis.com:2053/server";
 const appId = "A2FOUzXZbFyMxBZJUvPVvguhGLLMyuURgUJvwwsN"; 
 Moralis.start({ serverUrl, appId });
-Moralis.enableWeb3();
 let web3;
 let accounts;
 let currentUser;
